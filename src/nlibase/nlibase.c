@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #ifdef __unix__
 #include <unistd.h>
 #include <sys/mman.h>
-#endif	// __unix__
+#endif	/* __unix__ */
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -37,7 +37,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #ifdef WIN32
 #include <io.h>
 #include "mmap_win32.h"
-#endif	// WIN32
+#endif	/* WIN32 */
 
 /* DEBUG */
 #include <assert.h>
@@ -149,11 +149,13 @@ NASE_File *NASE_OpenFile(const char *fname) {
 		return 0;
 	}
 	
-	//if(BZipRemap(file) == -1) {
-	//	close(file->fd);
-	//	free(file);
-	//	return 0;
-	//}
+	/*
+	if(BZipRemap(file) == -1) {
+		close(file->fd);
+		free(file);
+		return 0;
+	}
+	*/
 
 	if(!strstr(file->mem, "ASCIIEXPORT")) {
 		NASE_CloseFile(file);
