@@ -172,7 +172,7 @@ static void DrawParticles(int i, unsigned long time) {
 	for(int j=0; j<part_count; j++) {
 		float x = t - (float)j * path_offset[i][j];
 		if(x < 0.0f) x = 0.0f;
-		if(x > 1.0f) x = 1.0f;
+		if(x > 0.95f) x = 0.95f;
 		Vector3 vec = ppath[i].Interpolate(x);
 		Vector2 c1(vec.x-part_size, vec.y-part_size);
 		Vector2 c2(vec.x+part_size, vec.y+part_size);

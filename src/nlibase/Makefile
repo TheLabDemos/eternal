@@ -1,8 +1,8 @@
 obj := nlibase.o
 
-opt := #-O3 -mmmx -msse -mfpmath=sse
+opt := -O3 -mmmx -msse
 
-CFLAGS := $(opt) -g -std=c89 -pedantic -Wall
+CFLAGS := $(opt) -std=c89 -pedantic -Wall
 
 #nlibase.a: $(obj)
 #	ar crus $@ $(obj)

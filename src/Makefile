@@ -8,9 +8,9 @@ obj := 	demo2.o \
 		part_statues.o \
 		sdlvf.o
 
-opt := #-O3 -mmmx -msse -mfpmath=sse
+opt := -O3 -mmmx -msse
 
-CXXFLAGS := -g $(opt) -ansi -pedantic -Wall -DSINGLE_PRECISION_MATH\
+CXXFLAGS := $(opt) -ansi -pedantic -Wall -DSINGLE_PRECISION_MATH\
 			-Icommon -Igfx -I3dengfx -Inlibase -Idsys -In3dmath2 `sdl-config --cflags`
 
 CFLAGS := $(CXXFLAGS)

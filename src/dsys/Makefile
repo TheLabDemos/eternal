@@ -1,8 +1,8 @@
 obj := dsys.o fx.o part.o script.o
 
-opt := #-O3 -mmmx -msse -mfpmath=sse
+opt := -O3 -mmmx -msse
 
-CXXFLAGS := -g $(opt) -ansi -pedantic -Wall -DSINGLE_PRECISION_MATH\
+CXXFLAGS := $(opt) -ansi -pedantic -Wall -DSINGLE_PRECISION_MATH\
 			-I../common -I../3dengfx -I../gfx -I../n3dmath2
 
 CFLAGS := $(CXXFLAGS)

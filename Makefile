@@ -1,9 +1,9 @@
 libnames := 3dengfx gfx nlibase dsys common n3dmath2
 obj := src/src_pack.o $(foreach lib,$(libnames),src/$(lib)/$(lib)_pack.o)
 
-opt := #-O3 -mmmx -msse -mfpmath=sse
+opt := -O3 -mmmx -msse
 
-CXXFLAGS := -g $(opt) -ansi -pedantic -Wall -DSINGLE_PRECISION_MATH\
+CXXFLAGS := $(opt) -ansi -pedantic -Wall -DSINGLE_PRECISION_MATH\
 			-Icommon -Igfx -I3dengfx -Inlibase `sdl-config --cflags`
 
 demo: $(obj)

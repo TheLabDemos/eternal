@@ -1,8 +1,8 @@
 obj := 3dgeom.o controller.o base_cam.o
 
-opt := #-O3 -mmmx -msse -mfpmath=sse
+opt := -O3 -mmmx -msse
 
-CXXFLAGS := -g $(opt) -ansi -pedantic -Wall -DSINGLE_PRECISION_MATH\
+CXXFLAGS := $(opt) -ansi -pedantic -Wall -DSINGLE_PRECISION_MATH\
 		-I. -I../common -I../3dengfx -I../n3dmath2
 
 #gfx.a: $(obj)

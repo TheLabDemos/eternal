@@ -1,6 +1,6 @@
 obj := color2.o curves.o image.o logger.o config_parser.o timer.o
 
-opt := #-O3 -mmmx -msse -mfpmath=sse
+opt := -O3 -mmmx -msse
 
 CXXFLAGS := $(opt) -ansi -pedantic -Wall -DSINGLE_PRECISION_MATH -I../n3dmath2
 CFLAGS := $(opt) -ansi -pedantic -Wall

@@ -1,8 +1,8 @@
 obj := n3dmath2.o n3dmath2_mat.o n3dmath2_qdr.o n3dmath2_qua.o n3dmath2_ray.o n3dmath2_vec.o
 
-opt := #-O3 -mmmx -msse -mfpmath=sse
+opt := -O3 -mmmx -msse
 
-CXXFLAGS := -g $(opt) -ansi -pedantic -Wall -DSINGLE_PRECISION_MATH
+CXXFLAGS := $(opt) -ansi -pedantic -Wall -DSINGLE_PRECISION_MATH
 
 n3dmath2_pack.o: $(obj)
 	$(LD) -r -o $@ $(obj)
