@@ -1,0 +1,22 @@
+The Lab Demos - Eternal (party version)
+---------------------------------------
+A GPL'ed free demo for GNU/Linux
+
+          code: Nuclear
+           gfx: Rawnoise
+additional gfx: Cybernoid
+         music: Amigo
+  sound system: Savvy
+
+if you want/need to recompile the demo, you will need my 3d math lib
+which is included in src/n3dmath-2.1.0.tar.gz (uses autoconf/automake,
+see readme for instructions) however you must make sure that in
+config.h there is a #define SINGLE_PRECISION_MATH otherwise the demo will
+not link properly and *will* crash.
+Other than that, make and run :)
+I'll fix that bother in the final version, so be sure to check back to our
+website for it in a few weeks (or so).
+
+web: http://thelab.demoscene.gr
+contact: nuclear@siggraph.org
+

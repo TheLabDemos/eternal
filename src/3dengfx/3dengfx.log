@@ -1,0 +1,6 @@
+[3DENGFX] Initializing SDL
+[3DENGFX] Trying to set Video Mode 640x480x32, d:32 s:1 windowed
+[3DENGFX] Initialized Video Mode:
+[3DENGFX]     bpp: 24 (888)
+[3DENGFX] zbuffer: 24
+[3DENGFX] stencil: 8
