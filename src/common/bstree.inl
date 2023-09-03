@@ -40,7 +40,7 @@ BSTree<T>::BSTree() {
 template <class T>
 BSTree<T>::BSTree(const BSTree<T> &tree) {
 	elem_count = tree.elem_count;
-	tree.Traverse(CopyInsert, PreorderTraversal);
+	tree.Traverse(CopyInsert, TRAVERSE_PREORDER);
 }
 
 template <class T>
@@ -179,5 +179,5 @@ inline void BSTree<T>::Traverse(void (*action)(BSTreeNode<T> *node), TraversalOr
 
 template <class T>
 int BSTree<T>::Size() const {
-	return ElementCount;
+	return elem_count;
 }

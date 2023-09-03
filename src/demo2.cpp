@@ -94,7 +94,7 @@ int Init() {
 
 	dsys::StartDemo();
 
-	if(sdlvf_init("data/Amigo - Eternal.ogg") != SDLVF_PLAYING) {
+	if(sdlvf_init("data/amigo-eternal.ogg") != SDLVF_PLAYING) {
 		std::cerr << "could not open music\n";
 	}
 	sdlvf_seek(19.5);

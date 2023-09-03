@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "3denginefx_types.hpp"
 
 SysCaps GetSystemCapabilities();
+const char *GetGLErrorString(GLenum error);
 
 #define INVALID_VBO		0
 
