@@ -1,3 +1,4 @@
+#if defined(WIN32) || defined(__WIN32)
 #include <stdlib.h>
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -17,3 +18,4 @@ int munmap(void *start, size_t length) {
 	free(start);
 	return 0;
 }
+#endif	/* WIN32 */

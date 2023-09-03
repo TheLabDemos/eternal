@@ -1,43 +1,29 @@
-libnames := 3dengfx gfx nlibase dsys common n3dmath2
-obj := src/src_pack.o $(foreach lib,$(libnames),src/$(lib)/$(lib)_pack.o)
+src = $(wildcard src/*.cpp) $(wildcard src/3dengfx/*.cpp) $(wildcard src/gfx/*.cpp) \
+	  $(wildcard src/dsys/*.cpp) $(wildcard src/n3dmath2/*.cpp) $(wildcard src/common/*.cpp)
+csrc = $(wildcard src/*.c) $(wildcard src/dsys/*.c) $(wildcard src/nlibase/*.c) \
+	   $(wildcard src/common/*.c)
 
-opt := -O3 -mmmx -msse
+obj = $(src:.cpp=.o) $(csrc:.c=.o)
+dep = $(src:.cpp=.d) $(csrc:.c=.d)
+bin = demo
 
-CXXFLAGS := $(opt) -ansi -pedantic -Wall -DSINGLE_PRECISION_MATH\
-			-Icommon -Igfx -I3dengfx -Inlibase `sdl-config --cflags`
+warn = -pedantic -Wall
+#opt = -O3 -ffast-math
+dbg = -g
+def = -DSINGLE_PRECISION_MATH
+inc = -Isrc/common -Isrc/gfx -Isrc/3dengfx -Isrc/nlibase -Isrc/n3dmath2 -Isrc/dsys
 
-demo: $(obj)
-	$(CXX) -o $@ $(obj) -lGL -lGLU -lbz2 `sdl-config --libs` `pkg-config libpng --libs` -lvorbisfile -lvorbis -logg
-	mv demo bin/
-	rm -f eternal; rm -f eternal_nogui
-	make config_tool
-	ln -s bin/demo eternal_nogui
+CFLAGS = $(warn) $(opt) $(dbg) $(inc) $(def) -MMD `sdl-config --cflags`
+CXXFLAGS = $(warn) $(opt) $(dbg) $(inc) $(def) -MMD `sdl-config --cflags`
+LDFLAGS = -lGL -lGLU -lbz2 -lpng -lvorbisfile -lvorbis -logg `sdl-config --libs`
 
-%.o:
-	cd $(@D); make
-
-#%.o:
-#	cd src; make
-
-3dengfx:
-	cd src/3dengfx; make; cd ../..
-
-gfx:
-	cd src/gfx; make; cd ../..
-
-dsys:
-	cd src/dsys; make; cd ../..
-
-config_tool:
-	cd src/config_tool; make; cd ../..; ln -s src/config_tool/config_tool eternal
+$(bin): $(obj)
+	$(CXX) -o $@ $(obj) $(LDFLAGS)
 
 .PHONY: clean
 clean:
-	@echo Cleaning...
-	cd src/common; make clean
-	cd src/3dengfx; make clean
-	cd src/gfx; make clean
-	cd src/nlibase; make clean
-	cd src/dsys; make clean
-	cd src/n3dmath2; make clean
-	cd src; make clean
+	rm -f $(obj) $(bin)
+
+.PHONY: cleandep
+cleandep:
+	rm -f $(dep)

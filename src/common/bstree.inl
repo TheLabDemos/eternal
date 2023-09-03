@@ -136,7 +136,7 @@ inline void BSTree<T>::Erase(T data) {
 	BSTreeNode<T> *node = RecRemoveNode(root, data);
 	if(node) {
 		elem_count--;
-		delete node;
+		//delete node;
 	}
 }
 

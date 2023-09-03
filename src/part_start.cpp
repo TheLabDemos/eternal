@@ -126,7 +126,7 @@ PartStart::~PartStart() {
 	delete raw;
 	delete amigo;
 	delete land;
-	delete vorig;
+	delete [] vorig;
 }
 
 static const unsigned long start_fade = 2000;

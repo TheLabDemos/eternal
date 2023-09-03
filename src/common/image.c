@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #include <png.h>
 #include "image.h"
 
@@ -33,18 +34,18 @@ static void *LoadPNG(FILE *fp, unsigned long *xsz, unsigned long *ysz);
 void *LoadImage(const char *fname, unsigned long *xsz, unsigned long *ysz) {
 	FILE *file;
 	unsigned char signature[FILE_SIG_BYTES];
-	
+
 	if(!(file = fopen(fname, "rb"))) {
 		fprintf(stderr, "Image loading error: could not open file %s\n", fname);
 		return 0;
 	}
-	
+
 	fread(signature, 1, FILE_SIG_BYTES, file);
-	
+
 	if(png_sig_cmp(signature, 0, FILE_SIG_BYTES) == 0) {
 		return LoadPNG(file, xsz, ysz);
 	}
-	
+
 	return 0;
 }
 
@@ -55,66 +56,69 @@ void FreeImage(void *img) {
 void *LoadPNG(FILE *fp, unsigned long *xsz, unsigned long *ysz) {
 	png_struct *png_ptr;
 	png_info *info_ptr;
-	int i;
-	unsigned long **lineptr, *pixels;
+	uint32_t i, j, **lineptr, *pixels, width, height;
 	int channel_bits, color_type, ilace_type, compression, filtering;
-	
+
 	if(!(png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0))) {
 		fclose(fp);
 		return 0;
 	}
-	
+
 	if(!(info_ptr = png_create_info_struct(png_ptr))) {
 		png_destroy_read_struct(&png_ptr, 0, 0);
 		fclose(fp);
 		return 0;
 	}
-	
-	if(setjmp(png_jmpbuf(png_ptr))) {		
+
+	if(setjmp(png_jmpbuf(png_ptr))) {
 		png_destroy_read_struct(&png_ptr, &info_ptr, 0);
 		fclose(fp);
 		return 0;
 	}
-	
-	png_init_io(png_ptr, fp);	
+
+	png_init_io(png_ptr, fp);
 	png_set_sig_bytes(png_ptr, FILE_SIG_BYTES);
-	
+
 	png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_BGR, 0);
-		
-	png_get_IHDR(png_ptr, info_ptr, xsz, ysz, &channel_bits, &color_type, &ilace_type, &compression, &filtering);
-	pixels = malloc(*xsz * *ysz * sizeof(unsigned long));
-	
-	lineptr = (unsigned long**)png_get_rows(png_ptr, info_ptr);
-	
-	for(i=0; i<*ysz; i++) {
-		
+
+	png_get_IHDR(png_ptr, info_ptr, &width, &height, &channel_bits, &color_type, &ilace_type, &compression, &filtering);
+	*xsz = width;
+	*ysz = height;
+	if(!(pixels = malloc(width * height * sizeof *pixels))) {
+		png_destroy_read_struct(&png_ptr, &info_ptr, 0);
+		fclose(fp);
+		return 0;
+	}
+
+	lineptr = (uint32_t**)png_get_rows(png_ptr, info_ptr);
+
+	for(i=0; i<height; i++) {
+
 		switch(color_type) {
 		case PNG_COLOR_TYPE_RGB:
 			{
-				int j;
 				unsigned char *ptr = (unsigned char*)lineptr[i];
-				for(j=0; j<*xsz; j++) {
-			
-					unsigned long pixel;
-					pixel = 0xff << 24 | ((unsigned long)*(ptr+2) << 16) | ((unsigned long)*(ptr+1) << 8) | (unsigned long)*ptr;
+				for(j=0; j<width; j++) {
+
+					uint32_t pixel;
+					pixel = 0xff << 24 | ((uint32_t)*(ptr+2) << 16) | ((uint32_t)*(ptr+1) << 8) | (uint32_t)*ptr;
 					ptr+=3;
-					pixels[i * *xsz + j] = pixel;			
+					pixels[i * width + j] = pixel;
 				}
 			}
 			break;
-			
+
 		case PNG_COLOR_TYPE_RGB_ALPHA:
-			memcpy(&pixels[i * *xsz], lineptr[i], *xsz * sizeof(unsigned long));
+			memcpy(&pixels[i * width], lineptr[i], width * sizeof *pixels);
 			break;
-			
+
 		default:
 			png_destroy_read_struct(&png_ptr, &info_ptr, 0);
 			return 0;
 		}
-				
+
 	}
-	
+
 	png_destroy_read_struct(&png_ptr, &info_ptr, 0);
-	
 	return pixels;
 }

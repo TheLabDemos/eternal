@@ -42,17 +42,17 @@ static unsigned int Hash(const KeyType &key, unsigned long size) {
 	int hash = 0, a = 31415, b = 27183;
 	char *str = strdup(((string)key).c_str());
 	char *sptr = str;
-	
+
 	while(*sptr) {
 		hash = (a * hash + *sptr++) % size;
 		a = a * b % (size - 1);
 	}
-	
+
 	free(str);
-	
+
 	return (unsigned int)(hash < 0 ? (hash + size) : hash);
 }
-		
+
 
 
 static void InitTexMan() {
@@ -61,9 +61,9 @@ static void InitTexMan() {
 }
 
 void AddTexture(Texture *texture, const char *fname) {
-	
+
 	if(!texman_initialized) InitTexMan();
-	
+
 	if(!fname) {	// enter a randomly named texture
 		textures.Insert(tmpnam(0), texture);
 	} else {
@@ -76,9 +76,9 @@ void RemoveTexture(Texture *texture) {
 }
 
 Texture *FindTexture(const char *fname) {
-	
+
 	if(!texman_initialized) InitTexMan();
-	
+
 	Pair<string, Texture*> *res = textures.Find(fname);
 	return res ? res->val : 0;
 }
@@ -91,15 +91,15 @@ Texture *FindTexture(const char *fname) {
  * and return it, and if it fails it returns a NULL pointer
  */
 Texture *GetTexture(const char *fname) {
-	
+
 	Texture *tex;
 	if((tex = FindTexture(fname))) return tex;
-	
+
 	PixelBuffer pbuf;
 	if(!(pbuf.buffer = (Pixel*)LoadImage(fname, &pbuf.width, &pbuf.height))) {
 		return 0;
 	}
-	
+
 	tex = new Texture;
 	tex->SetPixelData(pbuf);
 	return tex;
