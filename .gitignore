@@ -4,3 +4,4 @@
 *.swp
 demo
 data/
+*.log
